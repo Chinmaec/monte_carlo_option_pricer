@@ -51,4 +51,13 @@ pip install -r requirements.txt
 python test.py
 ```
 
+## Experiments & Diagnostics
+
+Detailed convergence analysis, variance reduction comparisons, and pricing diagnostics are available in the `cookbook.ipynb`.
+
+Includes:
+- Convergence behaviour (error vs simulations)
+- Plain vs antithetic variance comparison
+- Greeks estimation (Delta, Gamma)
+
 
