@@ -2,8 +2,8 @@
 import numpy as np 
 from scipy.stats import norm 
 
-from pricer.core import payoff_vanilla
-from pricer.core import mc_stats
+from mc_pricer.core import payoff_vanilla
+from mc_pricer.core import mc_stats
 
 def black_scholes_price(S0, K, T, r, sigma, option_type="call"):
     d1 = (np.log(S0/K) + (r + 0.5*sigma**2)*T) / (sigma*np.sqrt(T))
