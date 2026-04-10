@@ -5,8 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "monte-carlo-option-pricer"
 version = "0.1.0"
+authors = [{name = "Chinmae Chittybabu"} {email = "ccchinmae@gmail.com"}]
 description = "Monte Carlo option pricer for European and Asian options"
 readme = "README.md"
+keywords = ["option pricer", "greeks", "delta", "gamma", "Asian options", "European options", "Monte Carlo"]
 requires-python = ">=3.9"
 dependencies = [
   "numpy==2.3.3",
