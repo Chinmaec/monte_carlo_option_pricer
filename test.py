@@ -20,9 +20,10 @@ print(f"CI95: ({ci[0]:.2f}, {ci[1]:.2f})")
 print(f"European Delta MC: {d_eur:.2f} | SE: {d_eur_se:.2f} | CI: {d_eur_ci[0]:.2f}, {d_eur_ci[1]:.2f}")
 print(f"European Gamma MC: {g_eur:.2f} | SE: {g_eur_se:.2f} | CI: {g_eur_ci[0]:.2f},{g_eur_ci[1]:.2f}")
 
+
 # Asian Demo 
 price, se, ci = mc_asian(
-    S0, K, T, r, sigma, n_steps=252, n_samples=40_000, method= "antithetic",
+    S0, K, T, r, sigma, n_steps=252, n_samples=40_000, method= "control_variate",
     option_type="call", averaging="arithmetic", include_S0=False, seed=42)
 
 d_as = mc_delta(

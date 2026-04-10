@@ -1,7 +1,6 @@
 import numpy as np
 
 def _price_only(result):
-    # result is usually (price, se, ci95)
     return result[0] if isinstance(result, tuple) else result
 
 def _summary(x):

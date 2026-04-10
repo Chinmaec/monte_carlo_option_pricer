@@ -34,7 +34,7 @@ $$
 |---|---:|---:|---|---:|---:|
 | European Call (MC, antithetic) | 10.47 | 0.02 | (10.44, 10.50) | 0.64 | 0.02 |
 | European Call (Black-Scholes) | 10.45 | - | - | - | - |
-| Asian Call (MC, arithmetic, antithetic) | 5.82 | 0.03 | (5.76, 5.87) | 0.59 | 0.03 |
+| Asian Call (MC, arithmetic, control_variate) | 5.78 | 0.00 | (5.78, 5.79) | 0.59 | 0.03 |
 
 ## Requirements 
 ```
@@ -43,6 +43,10 @@ scipy==1.16.2
 pandas==2.3.2
 matplotlib==3.10.6
 ```
+## Installation
+### From GitHub
+```bash
+pip install "https://github.com/Chinmaec/monte_carlo_option_pricer.git"
 
 ## Usage
 ```powershell
@@ -57,7 +61,12 @@ Detailed convergence analysis, variance reduction comparisons, and pricing diagn
 
 Includes:
 - Convergence behaviour (error vs simulations)
-- Plain vs antithetic variance comparison
+- Plain vs antithetic (European) and plain vs antithetic vs control variate (Asian) variance comparison
 - Greeks estimation (Delta, Gamma)
 
+## Visualization 
+
+<p align="center">
+  <img src="./images/mc_european_asian_dark.png" alt="European and Asian Monte Carlo" width="900"/>
+</p>
 
