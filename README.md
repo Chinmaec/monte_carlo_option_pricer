@@ -41,6 +41,7 @@ $$
 
 ## Features
 - European and Asian option pricing (arithmetic & geometric averaging)
+- Engineered the MT19937 and Box-Muller transformation for normally distributed  random numbers
 - Variance-reduced estimators for improved efficiency
 - Vectorized simulation and payoff evaluation
 - Integrated diagnostics: price, SE, CI95, Delta, Gamma
