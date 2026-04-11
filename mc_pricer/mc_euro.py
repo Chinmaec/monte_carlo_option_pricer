@@ -2,8 +2,7 @@
 import numpy as np 
 from scipy.stats import norm 
 
-from mc_pricer.core import payoff_vanilla
-from mc_pricer.core import mc_stats
+from mc_pricer.core import payoff_vanilla, mc_stats, mt19937_rng, box_muller_normals
 
 def black_scholes_price(S0, K, T, r, sigma, option_type="call"):
     d1 = (np.log(S0/K) + (r + 0.5*sigma**2)*T) / (sigma*np.sqrt(T))
@@ -15,7 +14,6 @@ def black_scholes_price(S0, K, T, r, sigma, option_type="call"):
         return K * np.exp(-r*T) * norm.cdf(-d2) - S0 * norm.cdf(-d1)
     raise ValueError("option_type must be 'call' or 'put'")
 
-
 def mc_european(
     S0, K, T, r, sigma,
     n_samples=100_000,
@@ -24,18 +22,18 @@ def mc_european(
     seed=42
 ):
     
-    rng = np.random.default_rng(seed)
+    rng = mt19937_rng(seed=seed)
     drift = (r - 0.5 * sigma**2) * T
     vol = sigma * np.sqrt(T)
     disc_factor = np.exp(-r * T)
 
     if method == "plain":
-        Z = rng.standard_normal(n_samples)
+        Z = box_muller_normals(n_samples, rng)
         ST = S0 * np.exp(drift + vol * Z)
         disc = disc_factor * payoff_vanilla(ST, K, option_type)
 
     elif method == "antithetic":
-        Z = rng.standard_normal(n_samples)
+        Z = box_muller_normals(n_samples, rng)
         ST_plus = S0 * np.exp(drift + vol * Z)
         ST_minus = S0 * np.exp(drift - vol * Z)
         pay_plus = payoff_vanilla(ST_plus, K, option_type)

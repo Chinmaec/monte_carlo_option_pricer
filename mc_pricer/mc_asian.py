@@ -1,7 +1,7 @@
 # # Asian Monte Carlo (plain, antithetic and control variate methods)
 import numpy as np
 from scipy.stats import norm
-from mc_pricer.core import payoff_vanilla, mc_stats
+from mc_pricer.core import payoff_vanilla, mc_stats, mt19937_rng, box_muller_matrix
 
 
 def _simulate_asian_terminal_matrix(S0, T, r, sigma, n_steps, Z):
@@ -23,7 +23,6 @@ def _asian_average(S, averaging):
 def _geom_asian_closed_form_discrete(
     S0, K, T, r, sigma, n_steps, option_type="call", include_S0=False
 ):
-    # Exact price for discretely monitored geometric-average Asian option (GBM, risk-neutral)
     if T <= 0:
         return payoff_vanilla(np.array([S0]), K, option_type)[0]
 
@@ -66,10 +65,10 @@ def mc_asian(
     method="plain",   # "plain", "antithetic", "control_variate"
     seed=42,
 ):
-    rng = np.random.default_rng(seed)
+    rng = mt19937_rng(seed=seed)
 
     if method == "plain":
-        Z = rng.standard_normal((n_samples, n_steps))
+        Z = box_muller_matrix((n_samples, n_steps),rng)
         S = _simulate_asian_terminal_matrix(S0, T, r, sigma, n_steps, Z)
         if include_S0:
             S = np.concatenate([np.full((n_samples, 1), S0), S], axis=1)
@@ -78,7 +77,7 @@ def mc_asian(
         return mc_stats(disc)
 
     if method == "antithetic":
-        Z = rng.standard_normal((n_samples, n_steps))
+        Z = box_muller_matrix((n_samples, n_steps),rng)
         S_plus = _simulate_asian_terminal_matrix(S0, T, r, sigma, n_steps, Z)
         S_minus = _simulate_asian_terminal_matrix(S0, T, r, sigma, n_steps, -Z)
 
@@ -99,7 +98,7 @@ def mc_asian(
         if n_samples < 2:
             raise ValueError("n_samples must be >= 2 for control variate")
 
-        Z = rng.standard_normal((n_samples, n_steps))
+        Z = box_muller_matrix((n_samples, n_steps),rng)
         S = _simulate_asian_terminal_matrix(S0, T, r, sigma, n_steps, Z)
         if include_S0:
             S = np.concatenate([np.full((n_samples, 1), S0), S], axis=1)
